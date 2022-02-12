@@ -7,6 +7,19 @@ A python package to analyze computational simulations of protein dynamics result
 For the coarse grain model, this tool takes any depth of the directory, searches for the output of Koby’s Lab coarse-grained simulation program, and exports the analysis results in a new directory with the same tree structure as the input directory. \
 For the atomistic model, this tool takes all the XTC files in the input directory and considers them as repeats of the same experiment.
 
+## Configuration file:
+First, make sure to have a configuration file in the directory of results to be analyzed.\
+The configuration file should be written with a row for each sequence to be analyzed, as follows: sequenceName,residue1position,residue2position\
+Example:
+
+    seq1,1,12\
+    seq2,1,12\
+    seq3,1,12\
+If you know the estimated Length Scaling Exponent, and you want to calculate the FRET measurements then you should add a 4th column:
+
+    seq1,1,12,0.77\
+Sequences names should be precise as typed in the command.
+
 
 ## Installation:
 
@@ -34,11 +47,11 @@ In order to analyze the coarse results you can simply type:
 ``` r
 simuAnalysis coarse -f pathToThisRepo/Example/coarse
 ```
-The analysis products will be saved as CSV files in a new directory named AnalyzedData, which has the same tree structure as the input directory, to preserve the order of directories to different experiments. If wanted you can change the output path by adding -out argument:
+The analysis products will be saved as CSV files in a new directory named AnalyzedData, which has the same tree structure as the input directory, to preserve the order of directories to different experiments. If wanted you can change the output path by adding ```-out``` argument:
 ``` r
-simuAnalysis coarse -f pathToThisRepo/Example/coarse -out newPath
+simuAnalysis coarse -f pathToThisRepo/Example/coarse ```-out``` newPath
 ```
-In order to trim the beginning or the end of the simulation you can add -start or -end or both:
+In order to trim the beginning or the end of the simulation you can add ```-start``` or ```-end``` or both:
 ``` r
 simuAnalysis coarse -f pathToThisRepo/Example/coarse -start nStep -end nStep
 ```
@@ -48,11 +61,11 @@ For the simple analysis of atomistic XTC files, simply type:
 ``` r
 simuAnalysis atomistic -f pathToThisRepo/Example/atomistic/seq1 -seqName seq1
 ```
-The analysis products will be saved as CSV files in a new directory named AnalyzedData, if wanted you can change the output path by adding -out argument:
+The analysis products will be saved as CSV files in a new directory named AnalyzedData, if wanted you can change the output path by adding ```-out``` argument:
 ``` r
-simuAnalysis atomistic -f pathToThisRepo/Example/atomistic/seq1 -seqName seq1 -out newPath
+simuAnalysis atomistic -f pathToThisRepo/Example/atomistic/seq1 -seqName seq1 ```-out``` newPath
 ```
-In order to trim the beginning or the end of the simulation you can add -start or -end or both:
+In order to trim the beginning or the end of the simulation you can add ```-start``` or ```-end``` or both:
 ``` r
 simuAnalysis atomistic -f pathToThisRepo/Example/atomistic/seq1 -seqName seq1 -start nStep -end nStep
 ```
