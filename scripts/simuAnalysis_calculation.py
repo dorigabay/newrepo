@@ -259,7 +259,7 @@ def zip2pdb(directory):
             print("zip2pdb on:", wd)
             subprocess.Popen(unzip_command, cwd=wd, shell=True).wait()
             for file in glob.glob(dir+"output/Traj/*.dat"):
-                subprocess.Popen(["/home_e/dor/scripts/TrajToPDB/TrajToPDB.pl",file,skip_frame]).wait()
+                subprocess.Popen(["perl ./TrajToPDB.pl",file,skip_frame]).wait()
         else:
             for subdir in [x for x in os.walk(dir)][0][1]:
                 directories_toiter.append(dir+subdir+"/")
