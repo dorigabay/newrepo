@@ -45,7 +45,9 @@ if ($trajInputFile =~ /.bz2/){
     $trajInputFile =~ s/.bz2//g;
 }
 #require $utilDirectory."/TrajHandling.pm";
-require "/home_b/yulian/scripts/TrajToPDB/TrajHandling.pm";
+use File::Basename;
+my $dirname = dirname(__FILE__);
+require $dirname."/TrajHandling.pm";
 
 open (TRAJECTORY_FILE_HANDLE, $trajInputFile) or die "Error reading from $trajInputFile: $!\n";
 my $beadsDataRef = TrajHandling::readBeadsData(\*TRAJECTORY_FILE_HANDLE);
