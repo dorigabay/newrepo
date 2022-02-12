@@ -57,4 +57,5 @@ In order to trim the beginning or the end of the simulation you can add -start o
 simuAnalysis atomistic -f pathToThisRepo/Example/atomistic/seq1 -seqName seq1 -start nStep -end nStep
 ```
 Additional to those calculations that are also available for the coarse-grain model, simuAnalysis provide a function to estimate FRET measurement (If the Flory Exponent is already known). The value of the exponent needs to be added to the configuration file, as the third element of the query sequence (already been added to the example). Afterward, type: ``` -calcFRET T```. The results will be added to the CSV output file.\
+\
 If the expected Flory Exponent of the sequence isn’t yet known, you can try to extimate it by using ```-runMode calcLSE.``` This will make simuAnalysis to spit out a figure with the Flory formula fitted to the observed results. If the fitted curve is firmly satisfying, the exponent can be extracted manually (denoted as the parameter ‘b’). 
