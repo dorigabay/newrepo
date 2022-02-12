@@ -4,7 +4,5 @@ A python package to analyze computational simulations of protein dynamics result
 
 <img src="/pics/flory_formula.JPG" width="600">
 
-![mainFunctions](/pics/flory_formula.JPG =100x20)
-
 For the coarse grain model, this tool takes any depth of the directory, searches for the output of Koby’s Lab coarse-grained simulation program, and exports the analysis results in a new directory with the same tree structure as the input directory. 
 For the atomistic model, this tool takes all the XTC files in the input directory and considers them as repeats of the same experiment.
