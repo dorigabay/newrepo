@@ -26,7 +26,7 @@ def find_config_file(directory):
             return glob.glob(dir+"*.config")[0]
         else:
             for subdir in [x for x in os.walk(dir)][0][1]:
-                directories_toiter.append(dir + subdir + "/")
+                directories_to_iter.append(dir + subdir + "/")
     exit("No configuration file was found")
 
 
