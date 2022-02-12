@@ -1,1 +1,32 @@
+NAME
 
+  simuAnalysis, a python based tool for simple calculations over the results from atomistic (XTC files) and coarse-grain (PBD files) protein dynamic simulations.
+  The package calculates RG and residue distance for both atomistic and coarse grain,
+  and additionally, it calculates Length Scaling Exponent (LSE), and estimated FRET measurements.
+A configuration file must be concluded in the input directory.
+
+
+COMMANDS
+
+First attribute needs to be either ‘coarse’ or ‘atomistic’
+
+-f	<path>
+	Directory path withholds the simulation’s results.  For ‘coarse’ any parent directory will be enough. (obligatory, ‘atomistic’, ’coarse’)
+  
+-seqName	<sequence name>
+	Sequence name of which its atomistic simulations are quested to be analyzed. (obligatory, ‘atomistic’)
+
+-start	<frame number>
+	Simulation time point in which to begin the analysis should be given as an integer. (‘atomistic’, ’coarse’)
+
+-end	<frame number>
+	Simulation time point in which to end the analysis should be given as an integer. (‘atomistic’, ’coarse’)
+  
+-out	<path>
+	Directory path to save the analysis output. (‘atomistic’, ’coarse’)
+  
+-runMode	<analysis type>
+	Either ‘full’ for default analysis of atomistic simulation (RG, residue distance), or ‘calcLSE’ to create a graph with fitted Flory exponent to the observed results. (‘atomistic’)
+  
+-calcFRET	<Boolean>
+	‘True’/’T’/’TRUE’ to calculate estimated FRET measurements, or ‘False’/’F’/’FALSE’ (default). (‘atomistic’)
