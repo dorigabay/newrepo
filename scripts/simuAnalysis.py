@@ -4,18 +4,16 @@ import argparse
 import os
 from simuAnalysis_calculation import save_xtcAnalysis,iterPDBAnalysis,zip2pdb
 from calc_LSE import run_preCalcLSE,plot_LSE
-<<<<<<< HEAD
+
 import subprocess
 import re
-=======
 
->>>>>>> 6a030d4bb88b17b83d05ca246c9aacc97cbceb48
 
 if len(sys.argv) < 2:
     exit ("Not enough arguments")
 
+
 parser = argparse.ArgumentParser()
-<<<<<<< HEAD
 parser.add_argument('--manual','--man', action='store_true')
 args = vars(parser.parse_args())
 if args["manual"]:
@@ -23,6 +21,7 @@ if args["manual"]:
     os.chdir("../")
     subprocess.Popen("cat manual.txt", shell=True)
     exit()
+
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--simulationType','--t',help="The name of model used to create the results. Either 'coarse' or 'atomistic'. (obligatory)",choices=['atomistic','coarse'],required=True)
@@ -36,10 +35,8 @@ parser.add_argument('--runMode', help="Either ‘full’ for default analysis of
 args = vars(parser.parse_args())
 
 
-
 if args["outputDir"]==None:
     args["outputDir"]=os.path.join(args["directory"], "AnalyzedData")
-=======
 parser.add_argument('--simulationType','--t',help='',choices=['atomistic','coarse'],required=True)
 parser.add_argument('--directory','--d', help='',type=str, required=True)
 parser.add_argument('--seqName','--s', help='',type=str)
@@ -49,27 +46,24 @@ parser.add_argument('--outputDir','--o', help='',type=str)
 parser.add_argument('--calculateFret','--fret', help='',action='store_true')
 parser.add_argument('--runMode', help='',choices=["calcLSE","full"],type=str)
 args = vars(parser.parse_args())
->>>>>>> 6a030d4bb88b17b83d05ca246c9aacc97cbceb48
+
 
 if args["simulationType"]=="atomistic":
     if args["seqName"]==None:
         exit("---------------Missing segment name ('-seqName')---------------")
     if args["runMode"] == "full":
-<<<<<<< HEAD
         save_xtcAnalysis(args["directory"], args["seqName"],args["calculateFret"], args["outputDir"], args["startStep"], args["endStep"])
     elif args["runMode"] ==  "calcLSE":
         run_preCalcLSE(args["directory"], args["outputDir"], args["seqName"], args["startStep"], args["endStep"])
         plot_LSE(args["outputDir"],args["seqName"],args["outputDir"])
     elif args["runMode"] == None:
         save_xtcAnalysis(args["directory"], args["seqName"],args["calculateFret"], args["outputDir"], args["startStep"], args["endStep"])
-=======
         save_xtcAnalysis(args["directory"], args["seqName"], args["outputDir"], args["startStep"], args["endStep"])
     elif args["runMode"] ==  "calcLSE":
         run_preCalcLSE(args["directory"], args["outputDir"], args["seqName"], args["startStep"], args["endStep"])
         plot_LSE(os.path.join(args["directory"], "AnalyzedData"),args["seqName"],args["outputDir"])
     elif args["runMode"] == None:
         save_xtcAnalysis(args["directory"], args["seqName"], args["outputDir"], args["startStep"], args["endStep"])
->>>>>>> 6a030d4bb88b17b83d05ca246c9aacc97cbceb48
 
 if args["simulationType"]=="coarse":
     zip2pdb(args["directory"])
