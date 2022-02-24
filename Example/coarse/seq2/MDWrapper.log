@@ -1,0 +1,60 @@
+175917711221370:Random values: 55672 219424 145398
+Warning: no access to tty (Bad file descriptor).
+Thus no job control in this shell.
+#########################
+Running on host compute-0-1.local
+Time is Mon Feb 7 17:59:26 IST 2022
+Directory is /cluster_data/dor/pyCourseProject/coarse/seq2/
+temp Directory is /scratch/dor/seq2_0.3_428130
+0.092u 0.006s 0:00.09 100.0%	0+0k 0+80io 0pf+0w
+0.001u 0.000s 0:00.00 0.0%	0+0k 0+8io 0pf+0w
+0.000u 0.001s 0:00.01 0.0%	0+0k 0+8io 0pf+0w
+End of job. Time is Mon Feb 7 17:59:26 IST 2022
+275917711221370:Number of steps in simulation: 10000
+275917711221370:Temperatures submitted: 0.3
+275917711221370:Base seed for simulation:249557
+275917711221370:Random values: 236830 193014 170162
+375917711221370:Number of steps in simulation: 10000
+375917711221370:Temperatures submitted: 0.3
+375917711221370:Base seed for simulation:249557
+Warning: no access to tty (Bad file descriptor).
+Thus no job control in this shell.
+#########################
+Running on host compute-0-2.local
+Time is Mon Feb 7 17:59:41 IST 2022
+Directory is /cluster_data/dor/pyCourseProject/coarse/seq2/
+temp Directory is /scratch/dor/seq2_0.3_463326
+0.087u 0.013s 0:00.10 90.0%	0+0k 0+80io 0pf+0w
+0.001u 0.001s 0:00.00 0.0%	0+0k 0+8io 0pf+0w
+0.001u 0.000s 0:00.01 0.0%	0+0k 0+8io 0pf+0w
+End of job. Time is Mon Feb 7 17:59:41 IST 2022
+8718711221370:Random values: 97841 176621 50697
+Warning: no access to tty (Bad file descriptor).
+Thus no job control in this shell.
+#########################
+Running on host compute-0-0.local
+Time is Mon Feb 7 18:07:11 IST 2022
+Directory is /cluster_data/dor/pyCourseProject/coarse/seq2/
+temp Directory is /scratch/dor/seq2_0.3_269719
+0.889u 0.021s 0:00.91 98.9%	0+0k 0+232io 0pf+0w
+0.006u 0.000s 0:00.00 0.0%	0+0k 0+40io 0pf+0w
+0.001u 0.000s 0:00.01 0.0%	0+0k 0+40io 0pf+0w
+End of job. Time is Mon Feb 7 18:07:12 IST 2022
+18718711221370:Number of steps in simulation: 100000
+18718711221370:Temperatures submitted: 0.3
+18718711221370:Base seed for simulation:250028
+19718711221370:Random values: 212189 114183 85405
+Warning: no access to tty (Bad file descriptor).
+Thus no job control in this shell.
+#########################
+Running on host compute-0-3.local
+Time is Mon Feb 7 18:07:26 IST 2022
+Directory is /cluster_data/dor/pyCourseProject/coarse/seq2/
+temp Directory is /scratch/dor/seq2_0.3_788090
+0.888u 0.010s 0:00.90 98.8%	0+0k 0+232io 0pf+0w
+0.005u 0.001s 0:00.00 0.0%	0+0k 0+40io 0pf+0w
+0.001u 0.000s 0:00.01 0.0%	0+0k 0+40io 0pf+0w
+End of job. Time is Mon Feb 7 18:07:27 IST 2022
+29718711221370:Number of steps in simulation: 100000
+29718711221370:Temperatures submitted: 0.3
+29718711221370:Base seed for simulation:250028
