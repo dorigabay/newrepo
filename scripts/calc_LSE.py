@@ -5,10 +5,11 @@ import numpy
 import pandas as pd
 import numpy as np
 import os
+import seaborn as sns
 import MDAnalysis as MDA
 import math
 import sys
-from simuAnalysis_calculation import read_config
+from simuAnalysis2 import read_config
 from scipy.optimize import curve_fit
 
 
