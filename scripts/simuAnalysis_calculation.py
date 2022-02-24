@@ -1,10 +1,7 @@
 import os
 import re
-import sys
 import MDAnalysis as MDA
-import MDAnalysis.analysis.psa
 import numpy as np
-import matplotlib.pyplot as plt
 import math
 import glob
 import pandas as pd
@@ -202,7 +199,7 @@ def save_xtcAnalysis(input_directory,sequence_name,calc_fret = False,outputdir=N
     resi1, resi2 = [int(x) for x in sequenses_configuration[sequence_name][0:2]]
     if outputdir != None:
         output_directory = outputdir+"/"
-    else: output_directory = input_directory+"/AnalyzedData/"
+    else: output_directory = os.path.join(input_directory,"AnalyzedData")
     os.makedirs(output_directory, exist_ok=True)
     data = xtcAnalysis(input_directory,resi1,resi2,start_step,end_step)
     pd.DataFrame.to_csv(data, output_directory +sequence_name+ ".csv")

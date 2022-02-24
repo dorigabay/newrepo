@@ -1,76 +1,51 @@
 # Accommodation of simuAnalysis to the command prompt.
 import sys
-
+import argparse
+import os
+from simuAnalysis_calculation import save_xtcAnalysis,iterPDBAnalysis,zip2pdb
+from calc_LSE import run_preCalcLSE,plot_LSE
+import subprocess
+import re
 
 if len(sys.argv) < 2:
     exit ("Not enough arguments")
 
+parser = argparse.ArgumentParser()
+parser.add_argument('--manual','--man', action='store_true')
+args = vars(parser.parse_args())
+if args["manual"]:
+    os.chdir(os.path.dirname(__file__))
+    os.chdir("../")
+    subprocess.Popen("cat manual.txt", shell=True)
+    exit()
 
-arguments_given = dict(zip(sys.argv[2::2], sys.argv[3::2]))
+parser = argparse.ArgumentParser()
+parser.add_argument('--simulationType','--t',help="The name of model used to create the results. Either 'coarse' or 'atomistic'. (obligatory)",choices=['atomistic','coarse'],required=True)
+parser.add_argument('--directory','--d', help="Directory path withholds the simulation’s results.  For ‘coarse’ any parent directory will be enough. (obligatory, ‘atomistic’, ’coarse’)",type=str, required=True)
+parser.add_argument('--seqName','--s', help="Sequence name of which its atomistic simulations are quested to be analyzed. (obligatory, ‘atomistic’)",type=str)
+parser.add_argument('--startStep','--start', help="Simulation time point in which to begin the analysis should be given as an integer. (‘atomistic’, ’coarse’)",type=int)
+parser.add_argument('--endStep','--end', help="Simulation time point in which to end the analysis should be given as an integer. (‘atomistic’, ’coarse’)",type=int)
+parser.add_argument('--outputDir','--o', help="Directory path to save the analysis output. (‘atomistic’, ’coarse’)",type=str)
+parser.add_argument('--calculateFret','--calcFRET', help="To calculate estimated FRET measurements. (‘atomistic’)",action='store_true')
+parser.add_argument('--runMode', help="Either ‘full’ for default analysis of atomistic simulation (RG, residue distance), or ‘calcLSE’ to create a graph with fitted Flory exponent to the observed results. (‘atomistic’)",choices=["calcLSE","full"],type=str)
+args = vars(parser.parse_args())
 
-if sys.argv[1] == "atomistic":
-    # prepare arguments
-    directory, sequence_name, start_step, end_step,outdir,calc_fret,run_mode= ["" for x in range(7)]
-    if "-f" not in arguments_given.keys():
-        exit("""---------------Missing input directory ('-f')---------------""")
-    else:
-        directory = str(arguments_given["-f"])+"/"
-    if "-seqName" not in arguments_given.keys():
+
+
+if args["outputDir"]==None:
+    args["outputDir"]=os.path.join(args["directory"], "AnalyzedData")
+
+if args["simulationType"]=="atomistic":
+    if args["seqName"]==None:
         exit("---------------Missing segment name ('-seqName')---------------")
-    else:
-        sequence_name = str(arguments_given["-seqName"])
-    if "-start" in arguments_given.keys():
-        start_step = int(arguments_given["-start"])
-    else: start_step = None
-    if "-end" in arguments_given.keys():
-        end_step = int(arguments_given["-end"])
-    else: end_step = None
-    if "-out" in arguments_given.keys():
-        outdir = str(arguments_given["-out"])
-    else: outdir = directory+"/AnalyzedData/"
-    if "-calcFRET" in arguments_given.keys():
-        if arguments_given["-calcFRET"] not in ["True","False","T","F","TRUE","FALSE"]:
-            exit('---------------Argument "-calcFRET" should be boolean (True/False/T/F/TRUE/FALSE)---------------')
-        elif arguments_given["-calcFRET"] in ["True","TRUE","T"]:
-            calc_fret = True
-        else: calc_fret = False
-    else: calc_fret = False
+    if args["runMode"] == "full":
+        save_xtcAnalysis(args["directory"], args["seqName"],args["calculateFret"], args["outputDir"], args["startStep"], args["endStep"])
+    elif args["runMode"] ==  "calcLSE":
+        run_preCalcLSE(args["directory"], args["outputDir"], args["seqName"], args["startStep"], args["endStep"])
+        plot_LSE(args["outputDir"],args["seqName"],args["outputDir"])
+    elif args["runMode"] == None:
+        save_xtcAnalysis(args["directory"], args["seqName"],args["calculateFret"], args["outputDir"], args["startStep"], args["endStep"])
 
-    # run xtcAnalysis or calcLSE
-    if "-runMode" in arguments_given.keys() and arguments_given["-runMode"] == "full":
-        from simuAnalysis_calculation import save_xtcAnalysis
-        save_xtcAnalysis(directory, sequence_name, outdir, start_step, end_step)
-    elif "-runMode" in arguments_given.keys() and arguments_given["-runMode"] == "calcLSE":
-            from calc_LSE import run_preCalcLSE,plot_LSE
-            run_preCalcLSE(directory,outdir, sequence_name, start_step, end_step)
-            plot_LSE(directory+"/AnalyzedData/",sequence_name,outdir)
-    elif "-runMode" not in arguments_given.keys():
-        from simuAnalysis_calculation import save_xtcAnalysis
-        save_xtcAnalysis(directory, sequence_name, outdir, start_step, end_step)
-
-
-elif sys.argv[1] == "coarse":
-    # prepare arguments
-    directory, start_step,end_step,outdir = ["" for x in range(4)]
-    if "-f" not in arguments_given.keys():
-        exit("""---------------Missing input directory ('-f')---------------""")
-    else:
-        directory = str(arguments_given["-f"])+"/"
-    if "-start" in arguments_given.keys():
-        start_step = int(arguments_given["-start"])
-    else: start_step = None
-    if "-end" in arguments_given.keys():
-        end_step = int(arguments_given["-end"])
-    else: end_step = None
-    if "-out" in arguments_given.keys():
-        outdir = str(arguments_given["-out"])
-    else: outdir = directory+"/AnalyzedData/"
-    # run function
-    from simuAnalysis_calculation import zip2pdb, iterPDBAnalysis
-    zip2pdb(directory)
-    iterPDBAnalysis(directory,outdir, start_step,end_step)
-
-
-
-elif sys.argv[1] != "coarse" or sys.argv[1] != "atomistic":
-    exit("---------------Missing simulation type ('atomistic' or 'coarse')---------------")
+if args["simulationType"]=="coarse":
+    zip2pdb(args["directory"])
+    iterPDBAnalysis(args["directory"],args["outputDir"], args["startStep"], args["endStep"])
