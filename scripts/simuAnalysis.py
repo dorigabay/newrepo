@@ -4,7 +4,6 @@ import argparse
 import os
 from simuAnalysis_calculation import save_xtcAnalysis,iterPDBAnalysis,zip2pdb
 from calc_LSE import run_preCalcLSE,plot_LSE
-
 import subprocess
 import re
 
