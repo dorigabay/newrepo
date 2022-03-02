@@ -84,7 +84,7 @@ def run_preCalcLSE(directory,outputdir,sequence_name,start_step=None,end_step=No
             start_step = 1
         if end_step == None:
             end_step = len(universe.trajectory)
-        print("Analyzing:   "+all_xtc_files[i])
+        print("LSE analysis on:   "+all_xtc_files[i])
         preCalcLSE(universe,peptide_length,outputdir=outputdir+xtc_name,start_step=start_step,end_step=end_step)
     print("Success!!! All the XTC files have been analyzed, files Rg as a function of polymer length were saved.")
 
@@ -126,7 +126,7 @@ def fit_a_curve(train_data):
 
 def split_data(directory):
     """Divides the data to training and testing sets"""
-    all_LSE_files = glob.glob(directory + "*_LSE.csv")
+    all_LSE_files = glob.glob(os.path.join(directory,"*_LSE.csv"))
     train_files = all_LSE_files[:-1]
     test_data = pd.read_csv(all_LSE_files[-1])
     train_data = pd.DataFrame()

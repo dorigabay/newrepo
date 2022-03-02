@@ -19,11 +19,11 @@ def find_config_file(directory):
     directories_to_iter = [directory+"/"]
     while directories_to_iter:
         dir = directories_to_iter.pop()
-        if glob.glob(dir+"*.config"):
-            return glob.glob(dir+"*.config")[0]
+        if glob.glob(os.path.join(dir,"*.config")):
+            return glob.glob(os.path.join(dir,"*.config"))[0]
         else:
             for subdir in [x for x in os.walk(dir)][0][1]:
-                directories_to_iter.append(dir + subdir + "/")
+                directories_to_iter.append(os.path.join(dir,subdir,"/"))
     exit("No configuration file was found")
 
 
@@ -127,7 +127,7 @@ def pdbAnalysis (input_directory,resi1,resi2,start_step=None,end_step=None):
     :param end_step: Frame number to end analysing. Do not receive the time in the simulation. (integer)
     :return: Data Frame with each calculation (Rg and residue distance) for each repeat as a column.
     """
-    all_pdbs_files = glob.glob(input_directory+"/*.pdb")
+    all_pdbs_files = glob.glob(os.path.join(input_directory,"*.pdb"))
     all_data = pd.DataFrame()
     first = True
     for i in range(len(all_pdbs_files)):
@@ -153,10 +153,10 @@ def xtcAnalysis(directory, resi1, resi2, start_step=None, end_step=None):
     :param end_step: Frame number to end analysing. Do not receive the time in the simulation. (integer)
     :return: Data Frame with each calculation (Rg and residue distance) for each repeat as a column.
     """
-    all_xtc_files = glob.glob(directory + "/*.xtc")
-    all_topo_files = glob.glob(directory + "/*.gro")
+    all_xtc_files = glob.glob(os.path.join(directory,"*.xtc"))
+    all_topo_files = glob.glob(os.path.join(directory,"*.gro"))
     if len(all_topo_files) == 0:
-        all_topo_files = glob.glob(directory + "/*.pdb")
+        all_topo_files = glob.glob(os.path.join(directory,"*.pdb"))
     resi1, resi2 = (int(resi1+1), int(resi2+1))
     all_data = pd.DataFrame()
     first = True
@@ -181,7 +181,7 @@ def merge_continue_and_start(directory_start,directory_continue,output_directory
     continue_data = xtcAnalysis(directory_continue,resi1, resi2, start_step=0,end_step=end_step)
     continue_data["time"]= np.array(continue_data["time"])+end_time
     complete_data = pd.concat([start_data,continue_data],ignore_index=True)
-    pd.DataFrame.to_csv(complete_data, output_directory+"/"+segment + ".csv")
+    pd.DataFrame.to_csv(complete_data, os.path.join(output_directory,segment,".csv"))
 
 
 def save_xtcAnalysis(input_directory,sequence_name,calc_fret = False,outputdir=None,start_step=None,end_step=None):
@@ -202,10 +202,10 @@ def save_xtcAnalysis(input_directory,sequence_name,calc_fret = False,outputdir=N
     else: output_directory = os.path.join(input_directory,"AnalyzedData")
     os.makedirs(output_directory, exist_ok=True)
     data = xtcAnalysis(input_directory,resi1,resi2,start_step,end_step)
-    pd.DataFrame.to_csv(data, output_directory +sequence_name+ ".csv")
+    pd.DataFrame.to_csv(data, os.path.join(output_directory,sequence_name+".csv"))
     print("Success!!! All the XTC files have been analyzed, files were saved in CSV format.")
     if calc_fret:
-        iter_calc_FRET(output_directory + sequence_name + ".csv",sequenses_configuration)
+        iter_calc_FRET(os.path.join(output_directory,sequence_name+".csv"),sequenses_configuration,sequence_name)
 
 
 
@@ -222,20 +222,20 @@ def iterPDBAnalysis(directory,output_dir,start_step=None,end_step=None):
     The directory is saved in a default dir ('set_output_directory')
     """
     sequenses_configuration = read_config(directory)
-    directory_without_main = re.search("(.*/).*/",directory).group(1)
+    directory_without_main = re.search("(.*/).*",directory).group(1)
     directories_toiter = [directory]
     while directories_toiter:
         dir = directories_toiter.pop()
         if "output" in [x for x in os.walk(dir)][0][1]:
-            print("PDBAnalysis on:",dir+"output/traj/")
-            seq_name = re.search(".*/([^/]*)/", dir).group(1)
+            print("PDBAnalysis on:",os.path.join(dir,"output/traj/"))
+            seq_name = re.search(".*/([^/]*)", dir).group(1)
             down_tree = re.search(directory_without_main+"(.*)",dir).group(1)
-            data = pdbAnalysis(dir + "output/Traj/", sequenses_configuration[seq_name][0], sequenses_configuration[seq_name][1], start_step, end_step)
-            os.makedirs(output_dir+down_tree,exist_ok=True)
-            pd.DataFrame.to_csv(data,output_dir+down_tree+"file.csv")
+            data = pdbAnalysis(os.path.join(dir,"output/Traj/"), sequenses_configuration[seq_name][0], sequenses_configuration[seq_name][1], start_step, end_step)
+            os.makedirs(os.path.join(output_dir,down_tree),exist_ok=True)
+            pd.DataFrame.to_csv(data,os.path.join(output_dir,down_tree,"file.csv"))
         else:
             for subdir in [x for x in os.walk(dir)][0][1]:
-                directories_toiter.append(dir+subdir+"/")
+                directories_toiter.append(os.path.join(dir,subdir))
     print("Success!!! All the PDB files have been analyzed, files were saved.")
 
 def zip2pdb(directory):
@@ -252,14 +252,14 @@ def zip2pdb(directory):
     while directories_toiter:
         dir = directories_toiter.pop()
         if "output" in [x for x in os.walk(dir)][0][1]:
-            wd = dir+"output/Traj/"
+            wd = os.path.join(dir,"output/Traj/")
             print("zip2pdb on:", wd)
             subprocess.Popen(unzip_command, cwd=wd, shell=True).wait()
-            for file in glob.glob(dir+"output/Traj/*.dat"):
+            for file in glob.glob(os.path.join(dir,"output/Traj/*.dat")):
                 subprocess.Popen([os.path.dirname(__file__)+"/TrajToPDB.pl",file,skip_frame]).wait()
         else:
             for subdir in [x for x in os.walk(dir)][0][1]:
-                directories_toiter.append(dir+subdir+"/")
+                directories_toiter.append(os.path.join(dir,subdir))
 
 
 def calc_FRET(data,sequence_name,sequenses_configuration):
@@ -285,7 +285,7 @@ def calc_FRET(data,sequence_name,sequenses_configuration):
     return FRET_measures
 
 
-def iter_calc_FRET(csv_file,sequenses_configuration):
+def iter_calc_FRET(csv_file,sequenses_configuration,sequence_name):
     """
     Calculates the estimated FRET measurement for the atomistic simulation, for each repeat in the data.
     :param csv_file: An xtcAnalysis output, with the residues distances of each repeat.
@@ -293,7 +293,6 @@ def iter_calc_FRET(csv_file,sequenses_configuration):
     and the length scaling exponent.
     :return: The same CSV file which was given as input, with extra columns of FRET measurements for each repeat.
     """
-    sequence_name = re.search(".*/([^/]*).csv",csv_file).group(1)
     df = pd.read_csv(csv_file)
     for col in df.columns:
         if "resi_distance" in col:

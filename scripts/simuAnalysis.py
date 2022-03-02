@@ -36,16 +36,18 @@ args = vars(parser.parse_args())
 
 if args["outputDir"]==None:
     args["outputDir"]=os.path.join(args["directory"], "AnalyzedData/")
+else: args["outputDir"] = os.path.join(args["outputDir"], "AnalyzedData/")
 
 if args["simulationType"]=="atomistic":
     if args["seqName"]==None:
-        exit("---------------Missing segment name ('-seqName')---------------")
+        exit("---------------Missing segment name ('--seqName')---------------")
     elif not args["calculateLSE"]:
         save_xtcAnalysis(args["directory"], args["seqName"],args["calculateFret"], args["outputDir"], args["startStep"], args["endStep"])
     elif args["calculateLSE"]:
         run_preCalcLSE(args["directory"], args["outputDir"], args["seqName"], args["startStep"], args["endStep"])
-        plot_LSE(os.path.join(args["directory"], "AnalyzedData/"),args["seqName"],args["outputDir"])
+        plot_LSE(args["outputDir"],args["seqName"],args["outputDir"])
 
 if args["simulationType"]=="coarse":
     zip2pdb(args["directory"])
+
     iterPDBAnalysis(args["directory"],args["outputDir"], args["startStep"], args["endStep"])
