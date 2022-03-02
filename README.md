@@ -42,7 +42,7 @@ alias simuAnalysis='python3 theRepoPath/simuAnalysis.py'
 
 ## How to use the tool:
 
-In the GitHub repository, there are example results for short simulations of small proteins (12 residues), ran under both the atomistic and the coarse-grain model. 
+You can download an example results for short simulations of small proteins (12 residues) [(from here)](https://download-directory.github.io/?url=https%3A%2F%2Fgithub.com%2Fdorigabay%2Fdorigabay.github.io%2Ftree%2Fmain%2FsimuAnalysisProject%2FExample). Those are simulations results which ran under both the atomistic and the coarse-grain model. 
 
 ### Coarse-grain analysis
 simuAnalysis will search for the output directories which were given by the simulation program, and will unzip the files and convert them, if it hasn’t been made yet.
@@ -72,6 +72,6 @@ In order to trim the beginning or the end of the simulation you can add ```--sta
 ``` r
 simuAnalysis --simulationType atomistic --d pathToThisRepo/Example/atomistic/seq1 --seqName seq1 --start nStep --end nStep
 ```
-Additional to those calculations that are also available for the coarse-grain model, simuAnalysis provide a function to estimate FRET measurement (If the Flory Exponent is already known). The value of the exponent needs to be added to the configuration file, as the third element of the query sequence (already been added to the example). Afterward, type: ``` --calcFRET```. The results will be added to the CSV output file.\
+Additional to those calculations that are also available for the coarse-grain model, simuAnalysis provides a function to estimate FRET measurement (If the Flory Exponent is already known). The value of the exponent needs to be added to the configuration file, as the third element of the query sequence (already been added to the example). With the command use: ``` --calcFRET```. The results will be added to the CSV output file.\
 \
-If the expected Flory Exponent of the sequence isn’t yet known, you can try to extimate it by using ```--runMode calcLSE.``` This will make simuAnalysis to spit out a figure with the Flory formula fitted to the observed results. If the fitted curve is firmly satisfying, the exponent can be extracted manually (denoted as the parameter ‘b’). 
+If the expected Flory Exponent of the sequence isn’t yet known, you can try to extimate it by using ```--calcLSE.``` This will make simuAnalysis to spit out a figure with the Flory formula fitted to the observed results. If the fitted curve is firmly satisfying, the exponent can be extracted manually (denoted as the parameter ‘b’). 
